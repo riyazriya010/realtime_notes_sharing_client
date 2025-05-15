@@ -5,6 +5,9 @@ import userApis from '@/app/api/userApis';
 import { AxiosError } from 'axios';
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/redux/userSlice';
+import { useRouter } from 'next/navigation';
 
 export interface UserSignUpCredetials {
     username: string;
@@ -14,6 +17,8 @@ export interface UserSignUpCredetials {
 }
 
 export default function SignUp() {
+    const router = useRouter()
+    const dispatch = useDispatch()
     const { register, handleSubmit, formState: { errors } } = useForm<UserSignUpCredetials>()
 
     const formSubmit: SubmitHandler<UserSignUpCredetials> = async (data: UserSignUpCredetials) => {
@@ -21,7 +26,17 @@ export default function SignUp() {
             const response = await userApis.signUp(data)
             console.log('signup response: ', response)
             if(response.success){
+                dispatch(
+                    setUser({
+                        _id: response?.result._id,
+                        username: response.result.username,
+                        email: response.result.email
+                    })
+                )
                 toast.success(response.message)
+                setTimeout(() => {
+                    router.replace('/pages/home');
+                }, 2000)
             }
         } catch (error: unknown) {
             if (error instanceof AxiosError) {

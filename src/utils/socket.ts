@@ -2,7 +2,7 @@
 import { io } from 'socket.io-client';
 
 // 'https://api.learngrow.live'
-const socket = io('http://localhost:4001', {
+const socket = io('https://realtime-notes-sharing-server.onrender.com', {
     transports: ["websocket", "polling"],
     withCredentials: true,
 });

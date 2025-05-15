@@ -3,7 +3,7 @@
 import userApis from "@/app/api/userApis";
 import { AxiosError } from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { FaUser } from 'react-icons/fa';
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -46,6 +46,15 @@ export default function Notes() {
   const collaborator = notes?.collaborators?.find(c => c.userId === user._id);
   const hasWritePermission = collaborator?.permission === 'write';
   // const hasReadPermission = collaborator?.permission === 'read';
+
+   useLayoutEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedToken = localStorage.getItem('accessToken');
+      if(!storedToken){
+        router.replace('/pages/user-login')
+      }
+    }
+  }, [router]);
 
   const fetchData = async (id: string) => {
     try {

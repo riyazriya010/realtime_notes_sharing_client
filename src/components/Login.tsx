@@ -8,6 +8,7 @@ import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setUser } from '@/redux/userSlice';
 import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 export interface UserLoginCredetials {
     email: string;
@@ -19,11 +20,22 @@ export default function Login() {
     const dispatch = useDispatch()
     const { register, handleSubmit, formState: { errors } } = useForm<UserLoginCredetials>()
 
+    useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedToken = localStorage.getItem('accessToken');
+      if(storedToken){
+        router.replace('/pages/home')
+      }
+    }
+  }, [router]);
+
     const formSubmit: SubmitHandler<UserLoginCredetials> = async (data: UserLoginCredetials) => {
         try {
             const response = await userApis.login(data)
             console.log('login response : ', response)
             if (response?.success) {
+                localStorage.setItem('accessToken',response.accessToken)
+                localStorage.setItem('refreshToken',response.refreshToken)
                 dispatch(
                     setUser({
                         _id: response?.result._id,

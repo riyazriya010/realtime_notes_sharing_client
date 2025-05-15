@@ -14,6 +14,8 @@ export default function LandingPage() {
   const username = useAppSelector(state => state.user.username)
   const router = useRouter()
 
+  
+
   const handleLogout = async () => {
     const response = await userApis.logout()
     if (response.data.success) {

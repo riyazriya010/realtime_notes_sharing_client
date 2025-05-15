@@ -3,7 +3,7 @@
 import userApis from "@/app/api/userApis";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 
 const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
@@ -12,6 +12,15 @@ export default function MyNotes() {
     const user = useAppSelector((state) => state.user);
     const router = useRouter();
     const [notes, setNotes] = useState<any[]>([]);
+
+    useLayoutEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedToken = localStorage.getItem('accessToken');
+      if(!storedToken){
+        router.replace('/pages/user-login')
+      }
+    }
+  }, [router]);
 
     useEffect(() => {
         const fetchData = async () => {

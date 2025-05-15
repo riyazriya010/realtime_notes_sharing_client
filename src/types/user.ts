@@ -38,12 +38,16 @@ export type LoginResponse = {
   result: UserLogin;
   message: string;
   success: boolean;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export type SignUpResponse = {
   result: UserSignup;
   message: string;
   success: boolean;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export type CreateNotesResponse = {

@@ -67,6 +67,15 @@ const userApis = {
         } catch (error: unknown) {
             throw error
         }
+    },
+
+    logout: async(): Promise<any> => {
+        try{
+            const response = await axiosInstance.post(`${USER_SERVICE}/logout`)
+            return response
+        }catch(error: unknown){
+            throw error
+        }
     }
 
 }

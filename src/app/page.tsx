@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useSelector, TypedUseSelectorHook } from "react-redux";
 import { RootState } from "../redux/store"
+import userApis from "./api/userApis";
+import { useRouter } from "next/navigation";
 
 
 
@@ -10,6 +12,16 @@ const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
 export default function LandingPage() {
   const username = useAppSelector(state => state.user.username)
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    const response = await userApis.logout()
+    if (response.data.success) {
+      localStorage.clear()
+      router.replace('/pages/user-login')
+    }
+  };
+
   return (
     <>
       <div className="h-screen bg-body-bg">
@@ -25,6 +37,12 @@ export default function LandingPage() {
                     Go to Notes
                   </button>
                 </Link>
+                <button
+                  onClick={handleLogout}
+                  className="bg-gray-500 text-white px-8 py-2 rounded-full shadow-md hover:bg-gray-600 transition-all duration-300"
+                >
+                  Logout
+                </button>
               </div>
             )
               : (

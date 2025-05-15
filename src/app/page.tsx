@@ -4,13 +4,11 @@ import Link from "next/link";
 import { useSelector, TypedUseSelectorHook } from "react-redux";
 import { RootState } from "../redux/store"
 
-interface Props {
-  id?: string | null
-}
+
 
 const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
-export default function LandingPage({ id }: Props) {
+export default function LandingPage() {
   const username = useAppSelector(state => state.user.username)
   return (
     <>
@@ -19,12 +17,23 @@ export default function LandingPage({ id }: Props) {
         <div className="flex flex-wrap w-full items-center justify-around gap-[30vw]">
           <h1 className="text-stone-600 text-center py-10 text-5xl">Share Notes</h1>
           {
-            id ? (<h1>Welcome - {username}</h1>)
-              : (<Link href="/pages/user-login">
-                <button className="bg-red-400 text-white px-6 py-2 rounded-full hover:bg-red-600 transition">
-                  Login
-                </button>
-              </Link>)
+            username ? (
+              <div className="flex flex-col items-center space-y-4">
+                <h2 className="text-xl font-semibold text-stone-700">Welcome, <span className="text-red-700">{username}</span></h2>
+                <Link href="/pages/my-notes">
+                  <button className="bg-red-500 text-white px-8 py-2 rounded-full shadow-md hover:bg-red-600 transition-all duration-300">
+                    Go to Notes
+                  </button>
+                </Link>
+              </div>
+            )
+              : (
+                <Link href="/pages/user-login">
+                  <button className="bg-stone-800 text-white px-8 py-2 rounded-full shadow-md hover:bg-stone-900 transition-all duration-300">
+                    Login
+                  </button>
+                </Link>
+              )
           }
 
         </div>
@@ -43,7 +52,7 @@ export default function LandingPage({ id }: Props) {
             <h2 className="text-2xl font-semibold ml-10">Collaborate Smarter, Share Freely</h2>
             <p className="text-stone-600 ml-10">Unlock the power of real-time collaboration with smart note sharing.<br></br>
               Control who can view or edit your notes with role-based permissions.<br></br>
-              Whether you're studying, planning, or brainstorming — stay in sync, always.</p>
+              Whether youre studying, planning, or brainstorming — stay in sync, always.</p>
           </div>
         </div>
 
